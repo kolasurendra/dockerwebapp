@@ -8,8 +8,8 @@ services:
      - "3306:3306"
 
  application:
-   image: kolasurendra/ourproject:app
    container_name: containerapp
+   image: kolasurendra/ourproject:app
    ports:
      - "1234:8080"
    depends_on:
