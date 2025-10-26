@@ -1,16 +1,27 @@
----
-version: "3"
-services:
- devopsdb:
-   container_name: devopsdb
-   image: kolasurendra/ourproject:db
-   ports:
-     - "3306:3306"
+version: '3.8'
 
- application:
-   container_name: containerapp
-   image: kolasurendra/ourproject:app
-   ports:
-     - "1234:8080"
-   depends_on:
-     - "devopsdb"
+services:
+  devopsdb:
+    image: kolasurendra/ourproject:db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    deploy:
+      replicas: 4
+      restart_policy:
+        condition: on-failure
+
+  application:
+    image: kolasurendra/ourproject:app
+    ports:
+      - "1234:8080"
+    depends_on:
+      - devopsdb
+    deploy:
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  db_data:
